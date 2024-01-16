@@ -1,22 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/redux/hooks";
-import { removeTodo, taskCompleted } from "@/redux/todos/todoSlice";
+// import { useAppDispatch } from "@/redux/hooks";
+// import { removeTodo, taskCompleted } from "@/redux/todos/todoSlice";
 import { MouseEvent } from "react";
 import { AddAndUpdateTodoBtn } from "./AddAndUpdateTodoBtn";
+import {
+  useDeleteTodoMutation,
+  // useGetTodoApiQuery,
+  useIsCompletedTodoMutation,
+} from "@/redux/api/api";
 
 export const Todo = ({ todo }: any) => {
   const { todoId, title, description, isCompleted } = todo;
+  const [isCompletedTodo] = useIsCompletedTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const handleDeleteTodo = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    dispatch(removeTodo(todoId));
+    // dispatch(removeTodo(todoId));
+
+    deleteTodo({ todoId });
   };
 
   const handleIsCompleted = () => {
-    dispatch(taskCompleted({ todoId, isCompleted: !isCompleted }));
+    // dispatch(taskCompleted({ todoId, isCompleted: !isCompleted }));
+    //  For server
+    isCompletedTodo({ todoId, isCompleted: !isCompleted });
   };
 
   return (
@@ -25,10 +36,10 @@ export const Todo = ({ todo }: any) => {
         <label htmlFor={todoId} className="text-xl font-medium">
           <input
             type="checkbox"
-            checked={isCompleted}
-            onChange={handleIsCompleted}
             name={todoId}
             id={todoId}
+            defaultChecked={isCompleted}
+            onChange={handleIsCompleted}
             className="mx-1.5	"
           />
           {title}

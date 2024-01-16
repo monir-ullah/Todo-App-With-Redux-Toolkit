@@ -72,10 +72,15 @@ export const todoSlice = createSlice({
       }
       state.todos[targetIndex] = action.payload;
     },
+    filterTodo: (state, action) => {
+      state.todos = state.todos.filter(
+        (item) => item.priority === action.payload
+      );
+    },
   },
 });
 
-export const { addTodo, removeTodo, updateTodo, taskCompleted } =
+export const { addTodo, removeTodo, updateTodo, taskCompleted, filterTodo } =
   todoSlice.actions;
 
 export const selectTodos = (state: RootState) => state.todos.todos;

@@ -21,11 +21,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useAppDispatch } from "@/redux/hooks";
-import { addTodo, updateTodo } from "@/redux/todos/todoSlice";
+// import { useAppDispatch } from "@/redux/hooks";
+// import { addTodo, updateTodo } from "@/redux/todos/todoSlice";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { FormEvent, useState } from "react";
 import { ZodError, z } from "zod";
+import {
+  useAddTodoMutation,
+  // useIsCompletedTodoMutation,
+  useUpdateTodoMutation,
+} from "@/redux/api/api";
 
 export function AddAndUpdateTodoBtn(props: any) {
   const [btnState] = useState(props.value);
@@ -33,12 +38,16 @@ export function AddAndUpdateTodoBtn(props: any) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("Task Priority");
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [addTodo] = useAddTodoMutation();
 
   const todoTaskValidation = z.object({
+    todoId: z.string().optional(),
     title: z.string().min(3),
     description: z.string().min(10),
     priority: z.enum(["high", "low", "medium"]),
+    isCompleted: z.boolean().optional(),
   });
   const handleSubmitBtn = (e: FormEvent) => {
     e.preventDefault();
@@ -50,9 +59,16 @@ export function AddAndUpdateTodoBtn(props: any) {
         priority,
       });
       if (todoId != "") {
-        dispatch(updateTodo({ ...validTask, todoId }));
+        // dispatch(updateTodo({ ...validTask, todoId }));
+        validTask.todoId = todoId;
+        validTask.isCompleted = false;
+        updateTodo(validTask);
       } else {
-        dispatch(addTodo(validTask));
+        // dispatch(addTodo(validTask));
+        // updateTodo()
+        validTask.todoId = new Date().getTime().toString();
+        validTask.isCompleted = false;
+        addTodo(validTask);
       }
     } catch (error) {
       if (error instanceof ZodError) {
