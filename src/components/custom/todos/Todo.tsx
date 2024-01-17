@@ -32,7 +32,7 @@ export const Todo = ({ todo }: any) => {
 
   return (
     <div className="flex items-center justify-between p-5 border-2 border-red-300 rounded-md">
-      <div className="space-x-2">
+      <div className="w-2/6 space-x-2 text-left">
         <label htmlFor={todoId} className="text-xl font-medium">
           <input
             type="checkbox"
@@ -45,7 +45,7 @@ export const Todo = ({ todo }: any) => {
           {title}
         </label>
       </div>
-      <div>
+      <div className="w-2/6 text-left">
         <span>
           {isCompleted ? (
             <div className="flex space-x-3 text-green-400">
@@ -88,8 +88,8 @@ export const Todo = ({ todo }: any) => {
           )}
         </span>
       </div>
-      <p>{description}</p>
-      <div className="space-x-4">
+      <p className="w-4/6 text-center">{description}</p>
+      <div className="w-1/4 space-x-4">
         <Button
           onClick={handleDeleteTodo}
           className="px-4 py-6 bg-red-400 hover:bg-red-600"
