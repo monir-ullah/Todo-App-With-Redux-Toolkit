@@ -5,6 +5,7 @@ export const todoApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api" }),
   tagTypes: ["getPost"],
   endpoints: (builder) => ({
+    // Get All Todo From Mongodb Database
     getTodoApi: builder.query({
       query: (priority) => {
         const params = new URLSearchParams();
